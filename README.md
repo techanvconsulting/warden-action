@@ -173,4 +173,6 @@ For issues or questions:
 
 ## License
 
-MIT License - see [LICENSE](LICENSE) file for details.
+Apache License 2.0 - see [LICENSE](LICENSE) and [NOTICE](NOTICE) for details.
+
+Warden is a product of [Techanv Consulting](https://techanv.com/). It is a derivative of Anthropic's MIT-licensed [`claude-code-security-review`](https://github.com/anthropics/claude-code-security-review); the original MIT notice is retained in [NOTICE](NOTICE).
