@@ -1,7 +1,16 @@
+Warden — AIDLC Security Review
+A product of Techanv Consulting (https://techanv.com/)
+
 MIT License
 
-Copyright (c) 2025 Anubhav Gain, Techanv Consulting
-Copyright (c) 2025 Anthropic (original work)
+Copyright (c) 2025 Anubhav Gain — Techanv Consulting (https://techanv.com/)
+Copyright (c) 2025 Anthropic, PBC (original work)
+
+This software is a product of Techanv Consulting. It is a derivative of the
+open-source project "claude-code-security-review" by Anthropic, PBC
+(https://github.com/anthropics/claude-code-security-review), used and
+distributed under the terms of the MIT License. The original copyright notice
+is retained above as required by that license.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
