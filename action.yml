@@ -48,6 +48,16 @@ inputs:
     required: false
     default: ''
 
+  warden-url:
+    description: 'Warden platform base URL to push findings to (e.g. https://warden.example.com). Leave empty to skip.'
+    required: false
+    default: ''
+
+  warden-token:
+    description: 'Warden CI access token used to upload findings (Setting > CI Token in Warden).'
+    required: false
+    default: ''
+
 outputs:
   findings-count:
     description: 'Number of security findings'
@@ -316,7 +326,26 @@ runs:
           claudecode-error.log
         retention-days: 7
         if-no-files-found: ignore
-    
+
+    - name: Upload findings to Warden platform
+      if: inputs.warden-url != '' && steps.claudecode-check.outputs.enable_claudecode == 'true'
+      shell: bash
+      env:
+        WARDEN_URL: ${{ inputs.warden-url }}
+        WARDEN_TOKEN: ${{ inputs.warden-token }}
+        GITHUB_REPOSITORY: ${{ github.repository }}
+        PR_NUMBER: ${{ github.event.pull_request.number }}
+        GITHUB_SHA: ${{ github.sha }}
+        GITHUB_HEAD_REF: ${{ github.head_ref }}
+        GITHUB_BASE_REF: ${{ github.base_ref }}
+        GITHUB_SERVER_URL: ${{ github.server_url }}
+        GITHUB_RUN_ID: ${{ github.run_id }}
+        ACTION_PATH: ${{ github.action_path }}
+      run: |
+        echo "::group::Upload to Warden"
+        python3 "$ACTION_PATH/claudecode/warden_upload.py" "${{ steps.claudecode-scan.outputs.results_file }}"
+        echo "::endgroup::"
+
     - name: Comment PR with findings
       if: github.event_name == 'pull_request' && inputs.comment-pr == 'true' && steps.claudecode-check.outputs.enable_claudecode == 'true'
       shell: bash

@@ -147,6 +147,29 @@ claudecode/
 | `run-every-commit` | Run on every commit (skips cache check). May increase false positives on PRs with many commits. | `false` | No |
 | `false-positive-filtering-instructions` | Path to custom false-positive filtering instructions file | None | No |
 | `custom-security-scan-instructions` | Path to custom security scan instructions file to append to the audit prompt | None | No |
+| `warden-url` | Warden platform base URL to push findings to (e.g. `https://warden.example.com`). Leave empty to skip. | None | No |
+| `warden-token` | Warden CI access token used to upload findings (**Setting → CI Token** in Warden). | None | No |
+
+### Send findings to the Warden platform
+
+Set `warden-url` and `warden-token` to push every finding into your Warden
+instance through its CI ingest API, so PR-review results land in the dashboard
+alongside the rest of the scanner fleet (Semgrep, Trivy, gitleaks, …). The
+upload runs after the scan and **never fails the build** — it no-ops if the URL
+or token is unset.
+
+```yaml
+- uses: techanvconsulting/warden-action@v1
+  with:
+    claude-api-key: ${{ secrets.ANTHROPIC_API_KEY }}
+    warden-url: https://warden.example.com
+    warden-token: ${{ secrets.WARDEN_CI_TOKEN }}
+```
+
+Each finding maps to a Warden SAST finding under the `warden-ai` scanner:
+severity (`HIGH → High`, …), file/line → location, `exploit_scenario` appended
+to the description, `recommendation` → remediation, `cwe` → rule. PR scans are
+tagged with the merge-request id so they appear in the PR's shift-left view.
 
 ### Action Outputs
 
